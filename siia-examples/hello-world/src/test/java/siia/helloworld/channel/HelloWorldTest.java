@@ -31,18 +31,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"context.xml"})
+@ContextConfiguration(locations = { "context.xml" })
 public class HelloWorldTest {
 
-	
-	@Autowired @Qualifier("names")private MessageChannel channel;
-	
+	@Autowired
+	@Qualifier("names")
+	private MessageChannel channel;
+
 	@Test
-  public void run() {
-	//String cfg = "siia/helloworld/channel/context.xml";
-    //ApplicationContext context = new ClassPathXmlApplicationContext(cfg);
-   // MessageChannel channel = context.getBean("names", MessageChannel.class);
-    Message<String> message = MessageBuilder.withPayload("World").build();
-    channel.send(message);
-  }
+	public void run() {
+		// String cfg = "siia/helloworld/channel/context.xml";
+		// ApplicationContext context = new ClassPathXmlApplicationContext(cfg);
+		// MessageChannel channel = context.getBean("names",
+		// MessageChannel.class);
+		Message<String> message = MessageBuilder.withPayload("World").build();
+		channel.send(message);
+	}
 }
