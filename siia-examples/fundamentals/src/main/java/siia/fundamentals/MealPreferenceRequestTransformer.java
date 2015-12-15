@@ -25,8 +25,7 @@ import javax.xml.transform.Source;
  */
 public class MealPreferenceRequestTransformer {
 
-  public Source buildMealPreferenceUpdateRequest(MealPreference
-                                                     mealPreference) {
+  /*public Source buildMealPreferenceUpdateRequest(MealPreference mealPreference) {
     return new StringSource(
         "<updateMealPreference>" +
             "<flightRef>" +
@@ -36,5 +35,17 @@ public class MealPreferenceRequestTransformer {
                mealPreference + "" +
             "</mealPreference>" +
         "</updateMealPreference>");
-  }
+  }*/
+  
+  public String buildMealPreferenceUpdateRequest(MealPreference mealPreference) {
+	    return new String(
+	        "<updateMealPreference>" +
+	            "<flightRef>" +
+	               mealPreference.getFlightReference() +
+	            "</flightRef>" +
+	            "<mealPreference>" +
+	               mealPreference + "" +
+	            "</mealPreference>" +
+	        "</updateMealPreference>");
+	  }
 }

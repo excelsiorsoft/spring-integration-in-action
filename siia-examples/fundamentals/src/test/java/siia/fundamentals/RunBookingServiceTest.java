@@ -29,7 +29,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Marius Bogoevici
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:siia/fundamentals/context.xml")
+//@ContextConfiguration("classpath:siia/fundamentals/context.xml")
+@ContextConfiguration("context.xml")
 public class RunBookingServiceTest {
 
   @Autowired

@@ -55,7 +55,7 @@ public class BookingServiceWithStrongCoupling {
         booking, mealPreference);
 
     StringResult result = new StringResult();
-    mealPreferenceWebServiceInvoker.sendSourceAndReceiveToResult(
+    mealPreferenceWebServiceInvoker.sendSourceAndReceiveToResult( //<- check this method on web service temlate
         mealUpdateSource, result);
   }
 
