@@ -55,6 +55,7 @@ public class AllChannelsDirectTest {
         bookingsChannel.send(bookingMessage);
 
         List<Email> emails = emailConfirmationService.getEmails(); //this is a blocking call
+
         
         Assert.assertEquals(1, emails.size());
         Assert.assertEquals(customerEmail, emails.get(0).getRecipient());
