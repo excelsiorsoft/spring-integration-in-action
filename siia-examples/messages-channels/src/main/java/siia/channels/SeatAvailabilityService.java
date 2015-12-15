@@ -16,11 +16,13 @@
 
 package siia.channels;
 
+import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 
 /**
  * @author Marius Bogoevici
  */
+@MessageEndpoint
 public class SeatAvailabilityService {
 
     @ServiceActivator

@@ -18,6 +18,7 @@ package siia.channels;
 
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Marius Bogoevici

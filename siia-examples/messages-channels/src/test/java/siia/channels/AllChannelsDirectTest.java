@@ -43,7 +43,8 @@ public class AllChannelsDirectTest {
 
     @Test
     public void testChannels() throws Exception {
-        Booking booking = new Booking();
+        
+    	Booking booking = new Booking();
         booking.setCustomerEmail("user@example.com");
         booking.setFlightId("AC100");
         Message<Booking> bookingMessage = MessageBuilder.withPayload(booking).build();

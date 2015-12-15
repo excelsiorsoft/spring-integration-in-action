@@ -23,11 +23,13 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.integration.Message;
 import org.springframework.integration.MessagingException;
+import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.core.MessageHandler;
 
 /**
  * @author Marius Bogoevici
  */
+@MessageEndpoint("emailConfirmationService")
 public class StubEmailConfirmationService implements MessageHandler {
 
     private List<Email> emails = new ArrayList<Email>();
