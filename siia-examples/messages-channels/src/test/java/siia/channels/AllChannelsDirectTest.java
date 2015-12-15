@@ -16,6 +16,8 @@
 
 package siia.channels;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,13 +46,17 @@ public class AllChannelsDirectTest {
     @Test
     public void testChannels() throws Exception {
         
+    	String customerEmail = "user@example.com";
+    	
     	Booking booking = new Booking();
-        booking.setCustomerEmail("user@example.com");
+        booking.setCustomerEmail(customerEmail);
         booking.setFlightId("AC100");
         Message<Booking> bookingMessage = MessageBuilder.withPayload(booking).build();
         bookingsChannel.send(bookingMessage);
 
-        Assert.assertEquals(1, emailConfirmationService.getEmails().size());
-        Assert.assertEquals("user@example.com", emailConfirmationService.getEmails().get(0).getRecipient());
+        List<Email> emails = emailConfirmationService.getEmails(); //this is a blocking call
+        
+        Assert.assertEquals(1, emails.size());
+        Assert.assertEquals(customerEmail, emails.get(0).getRecipient());
     }
 }

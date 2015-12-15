@@ -34,7 +34,7 @@ public class StubEmailConfirmationService implements MessageHandler {
 
     private List<Email> emails = new ArrayList<Email>();
 
-    CountDownLatch countDownLatch = new CountDownLatch(1);
+    CountDownLatch countDownLatch = new CountDownLatch(2);
 
     @Override
     public void handleMessage(Message<?> message) throws MessagingException {
@@ -57,7 +57,8 @@ public class StubEmailConfirmationService implements MessageHandler {
     }
 
     public List<Email> getEmails() throws InterruptedException {
-        countDownLatch.await(5, TimeUnit.SECONDS);
+        if(countDownLatch.getCount() != 0){	System.out.println("I'm blocked by the latch now...  Will wait for 5 seconds before continuing.");}
+    	countDownLatch.await(5, TimeUnit.SECONDS);
         return emails;
     }
 }
