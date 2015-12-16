@@ -42,8 +42,8 @@
     <outbound-channel-adapter channel="emailConfirmationRequests"
                               ref="emailConfirmationService" />
 
-    <beans:bean id="billForBookingService" class="siia.channels.BillForBookingService"/>
+    <!-- <beans:bean id="billForBookingService" class="siia.channels.BillForBookingService"/>
     <beans:bean id="seatAvailabilityService" class="siia.channels.SeatAvailabilityService"/>
-    <beans:bean id="emailConfirmationService" class="siia.channels.StubEmailConfirmationService"/>
+    <beans:bean id="emailConfirmationService" class="siia.channels.StubEmailConfirmationService"/> -->
 
 </beans:beans>
