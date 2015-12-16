@@ -40,6 +40,7 @@
                        output-channel="emailConfirmationRequests"
                        ref="seatAvailabilityService" />
     
+
     <!-- Asynchronous handoff is happenning here -->
     
     <channel id="emailConfirmationRequests">
