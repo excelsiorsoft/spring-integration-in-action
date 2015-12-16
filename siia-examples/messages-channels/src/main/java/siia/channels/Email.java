@@ -21,7 +21,9 @@ package siia.channels;
  */
 public class Email {
 
-    private String recipient;
+   
+
+	private String recipient;
 
     private String content;
 
@@ -45,4 +47,9 @@ public class Email {
     public void setContent(String content) {
         this.content = content;
     }
+    
+    @Override
+   	public String toString() {
+   		return "Email [recipient=" + recipient + ", content=" + content + "]";
+   	}
 }

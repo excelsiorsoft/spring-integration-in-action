@@ -20,8 +20,18 @@ package siia.channels;
  * @author Marius Bogoevici
  */
 public class Booking {
+	
+	private int customerAge;
 
-    private String flightId;
+    public Integer getCustomerAge() {
+		return customerAge;
+	}
+
+	public void setCustomerAge(int customerAge) {
+		this.customerAge = customerAge;
+	}
+
+	private String flightId;
 
     private String customerEmail;
 
@@ -36,11 +46,19 @@ public class Booking {
         this.flightId = flightId;
     }
 
-    public String getCustomerEmail() {
+    
+
+	public String getCustomerEmail() {
         return customerEmail;
     }
 
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
+    
+    @Override
+	public String toString() {
+		return "Booking [age=" + customerAge + ", flightId=" + flightId
+				+ ", customerEmail=" + customerEmail + "]";
+	}
 }

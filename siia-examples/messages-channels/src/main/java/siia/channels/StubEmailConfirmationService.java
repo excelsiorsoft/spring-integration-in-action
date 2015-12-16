@@ -34,7 +34,7 @@ public class StubEmailConfirmationService implements MessageHandler {
 
     private List<Email> emails = new ArrayList<Email>();
 
-    CountDownLatch countDownLatch = new CountDownLatch(2);
+    CountDownLatch countDownLatch = new CountDownLatch(5);
 
     @Override
     public void handleMessage(Message<?> message) throws MessagingException {

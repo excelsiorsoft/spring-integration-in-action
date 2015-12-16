@@ -27,7 +27,10 @@ public class SeatAvailabilityService {
 
     @ServiceActivator
     public SeatConfirmation confirmSeat(ChargedBooking chargedBooking) {
-        Seat seat = new Seat("1A");
+        
+    	Integer customerAge = chargedBooking.getBooking().getCustomerAge();
+    	Seat seat = (customerAge != null && customerAge != 0)?new Seat(String.valueOf(customerAge)):new Seat("1A");
+    /*	Seat seat = new Seat("1A");*/
         return new SeatConfirmation(chargedBooking, seat);
     }
 }

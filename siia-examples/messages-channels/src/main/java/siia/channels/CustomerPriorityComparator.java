@@ -18,13 +18,28 @@ package siia.channels;
 
 import java.util.Comparator;
 
+import org.springframework.integration.Message;
+import org.springframework.stereotype.Component;
+
 /**
  * @author Marius Bogoevici
  */
-public class CustomerPriorityComparator implements Comparator<Booking> {
+@Component
+public class CustomerPriorityComparator implements Comparator<Message<Booking>> {
 
-    @Override
-    public int compare(Booking left, Booking right) {
-        return left.getCustomerEmail().compareTo(right.getCustomerEmail());
-    }
+	@Override
+	public int compare(Message<Booking> left, Message<Booking> right) {
+		
+		Booking leftPayload = left.getPayload();
+		Booking rightPayload = right.getPayload();
+	
+		int result = leftPayload.getCustomerAge().compareTo(rightPayload.getCustomerAge());
+		
+		Booking willHandle = (result < 0)?rightPayload:leftPayload;
+		
+		System.out.println("leftPayload->"+leftPayload + "||"+"rightPayload->"+rightPayload+"=> choosing "+willHandle.getCustomerAge());
+		System.out.println("============================================================");
+		
+		return result;
+	}
 }

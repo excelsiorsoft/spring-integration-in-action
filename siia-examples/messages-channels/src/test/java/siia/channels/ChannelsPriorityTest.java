@@ -16,6 +16,11 @@
 
 package siia.channels;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,14 +52,55 @@ public class ChannelsPriorityTest {
 
     @Test
     public void testChannels() throws Exception {
-
-        Booking booking = new Booking();
-        booking.setCustomerEmail("user@example.com");
+       
+    	Random rand = new Random();
+    	
+    	int size = 6;
+    	int start = 1;
+    	
+    	List<Integer> availableSeats = availableSeats(start, size);
+    	System.out.println("has " +availableSeats.size() +" available seats.");
+    	
+    	for (int num = start; num <= size; num++){
+    	String customerEmail = "user"+num+"@example.com";
+    	
+    	int randomNum = rand.nextInt((size - start) + 1) + start;
+    	
+    	
+    	Booking booking = new Booking();
+        booking.setCustomerEmail(customerEmail);
         booking.setFlightId("AC100");
+        
+        System.out.println("n="+num);
+        System.out.println("availableSeats.get(["+num+"])="+availableSeats.get(num-1));
+        
+        booking.setCustomerAge(availableSeats.get(num-1));
+        //booking.setCustomerAge(randomNum);
         Message<Booking> bookingMessage = MessageBuilder.withPayload(booking).build();
         bookingsChannel.send(bookingMessage);
-
-        Assert.assertEquals(1, emailConfirmationService.getEmails().size());
-        Assert.assertEquals("user@example.com", emailConfirmationService.getEmails().get(0).getRecipient());
+    	}
+        List<Email> emails = emailConfirmationService.getEmails(); //this is a blocking call
+        
+        Assert.assertEquals(size, emails.size());
+        //Assert.assertEquals(customerEmail, emails.get(0).getRecipient());
+        
+        System.out.println("Received: " +emails);
     }
+    
+    
+    public List<Integer> availableSeats(int from, int to) {
+        
+    	List<Integer> list = new ArrayList<Integer>();
+        
+    	for (int i=from; i<=to; i++) {
+            list.add(new Integer(i));
+        }
+        Collections.shuffle(list);
+        
+            System.out.println("available seats: " + list);
+            
+            return list;
+        
+    }
+    
 }
