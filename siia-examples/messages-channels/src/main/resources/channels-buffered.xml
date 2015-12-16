@@ -29,16 +29,23 @@
     <poller default="true" fixed-rate="1000"/>
 
     <channel id="bookingConfirmationRequests"/>
+    
     <service-activator input-channel="bookingConfirmationRequests"
                        output-channel="chargedBookings"
                        ref="billForBookingService" />
+    
     <channel id="chargedBookings" />
+    
     <service-activator input-channel="chargedBookings"
                        output-channel="emailConfirmationRequests"
                        ref="seatAvailabilityService" />
+    
+    <!-- Asynchronouse handoff is happenning here -->
+    
     <channel id="emailConfirmationRequests">
         <queue />
     </channel>
+    
     <outbound-channel-adapter channel="emailConfirmationRequests"
                               ref="emailConfirmationService" />
 
