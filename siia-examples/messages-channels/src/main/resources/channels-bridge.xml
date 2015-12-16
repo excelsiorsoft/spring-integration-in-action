@@ -1,47 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
- * Copyright 2012 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
--->
+<!-- * Copyright 2012 the original author or authors. * * Licensed under 
+	the Apache License, Version 2.0 (the "License"); * you may not use this file 
+	except in compliance with the License. * You may obtain a copy of the License 
+	at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by 
+	applicable law or agreed to in writing, software * distributed under the 
+	License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. * See the License for the specific 
+	language governing permissions and * limitations under the License. -->
 <beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:context="http://www.springframework.org/schema/context"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns="http://www.springframework.org/schema/integration"
-             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd">
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+             http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+             ">
 
-    <annotation-config/>
+    <annotation-config />
+    <context:component-scan base-package="siia.channels"/>
 
-    <poller default="true" fixed-rate="1000"/>
+	<poller default="true" fixed-rate="1000" />
 
-    <channel id="bookingConfirmationRequests"/>
-    <service-activator input-channel="bookingConfirmationRequests"
-                       output-channel="chargedBookings"
-                       ref="billForBookingService" />
-    <channel id="chargedBookings" />
-    <service-activator input-channel="chargedBookings"
-                       output-channel="completedBookings"
-                       ref="seatAvailabilityService" />
-    <publish-subscribe-channel id="completedBookings" />
-    <bridge input-channel="completedBookings"
-            output-channel="emailConfirmationRequests" />
-    <channel id="emailConfirmationRequests">
-        <queue />
-    </channel>
-    <outbound-channel-adapter channel="emailConfirmationRequests"
-                              ref="emailConfirmationService" />
+	<channel id="bookingConfirmationRequests" />
 
-    <beans:bean id="billForBookingService" class="siia.channels.BillForBookingService"/>
-    <beans:bean id="seatAvailabilityService" class="siia.channels.SeatAvailabilityService"/>
-    <beans:bean id="emailConfirmationService" class="siia.channels.StubEmailConfirmationService"/>
+	<service-activator input-channel="bookingConfirmationRequests"
+		output-channel="chargedBookings" ref="billForBookingService" />
+
+	<channel id="chargedBookings" />
+
+	<service-activator input-channel="chargedBookings"
+		output-channel="completedBookings" ref="seatAvailabilityService" />
+
+	<publish-subscribe-channel id="completedBookings" />
+
+<!--  
+The publish-subscribe channel doesn’t support queueing, but it does support asynchronous
+operation if you provide a task executor that delivers messages to each of
+the subscribers in separate threads. But this approach may still block the main thread
+sending the message on the channel where the task executor is configured to use the
+caller thread or block the caller thread when the underlying thread pool is exhausted.
+
+To ensure that a backlog in sending email confirmations doesn’t block either the
+sender thread or the entire thread pool for the task executor, you can connect the
+new publish-subscribe channel to the existing email confirmation queue by means of
+a bridge. 
+
+The bridge is an enterprise integration pattern that supports the connection
+of two channels, which allows the publish-subscribe channel to deliver to the queue
+and then have the thread return immediately
+-->
+	<bridge input-channel="completedBookings" output-channel="emailConfirmationRequests" />
+
+	<channel id="emailConfirmationRequests">
+		<queue />
+	</channel>
+	
+	<outbound-channel-adapter channel="emailConfirmationRequests"
+		ref="emailConfirmationService" />
+
+	<!-- <beans:bean id="billForBookingService" class="siia.channels.BillForBookingService" />
+	<beans:bean id="seatAvailabilityService" class="siia.channels.SeatAvailabilityService" />
+	<beans:bean id="emailConfirmationService" class="siia.channels.StubEmailConfirmationService" /> -->
 
 </beans:beans>
